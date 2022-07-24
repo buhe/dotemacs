@@ -71,5 +71,41 @@
 
 ;; 好了。按个 M-x 试试
 
+(use-package company
+  ;; 等价于 (add-hook 'after-init-hook #'global-company-mode)
+  :hook (after-init . global-company-mode)
+  :config
+  ;; setq 可以像这样连着设置多个变量的值
+  (setq company-tooltip-align-annotations t ; 注释贴右侧对齐
+        company-tooltip-limit 20            ; 菜单里可选项数量
+        company-show-numbers t              ; 显示编号（然后可以用 M-数字 快速选定某一项）
+        company-idle-delay .2               ; 延时多少秒后弹出
+        company-minimum-prefix-length 1     ; 至少几个字符后开始补全
+        ))
 
+(use-package flycheck
+  :init ;; 在 (require) 之前需要执行的
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+  :config
+  (global-flycheck-mode))
+
+;; ~/.emacs.d/init.el
+(use-package projectile
+  :config
+  ;; 把它的缓存挪到 ~/.emacs.d/.cache/ 文件夹下，让 gitignore 好做
+  (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
+  ;; 全局 enable 这个 minor mode
+  (projectile-mode 1)
+  ;; 定义和它有关的功能的 leader key
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))
+
+(use-package helm-projectile
+  :if (functionp 'helm) ;; 如果使用了 helm 的话，让 projectile 的选项菜单使用 Helm 呈现
+  :config
+  (helm-projectile-on))
+
+;; ~/.emacs.d/init.el
+(use-package magit)
+
+;; 没错，好了。
 
