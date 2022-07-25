@@ -236,7 +236,9 @@
 (setq make-backup-files nil)                 ; 关闭文件自动备份
 (add-hook 'prog-mode-hook #'hs-minor-mode)   ; 编程模式下，可以折叠代码块
 
-
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
 
 (require 'hello)
 (require 'rust)
