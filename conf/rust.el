@@ -1,3 +1,3 @@
 (use-package rustic)
 
-(provide 'hello) ;
+(provide 'rust) ;
