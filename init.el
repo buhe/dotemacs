@@ -1,3 +1,4 @@
+(add-to-list 'load-path (expand-file-name "conf" user-emacs-directory)) 
 (global-linum-mode 1)
 ;; hide toolbar menubar scrollbar
 (tool-bar-mode 0)
@@ -222,3 +223,8 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
+
+(defun hello-world ()
+  (interactive)
+  (message "Hello, world!"))
+(use-package rustic)
