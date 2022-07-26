@@ -92,7 +92,6 @@
 ;; 没错，好了。
 
 
-
 (use-package treemacs
   :ensure t
   :defer t
@@ -115,7 +114,7 @@
           treemacs-find-workspace-method           'find-for-file-or-pick-first
           treemacs-git-command-pipe                ""
           treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(nil . "^^^^^^")'
+          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
           treemacs-hide-dot-git-directory          t
           treemacs-indentation                     2
           treemacs-indentation-string              " "
@@ -181,6 +180,9 @@
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
@@ -203,10 +205,6 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
-
-(use-package lsp-treemacs
-  :ensure t
-  :after (treemacs lsp))
 
     
 
