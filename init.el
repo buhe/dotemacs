@@ -48,8 +48,6 @@
 (setq use-package-always-ensure t)
 
 ;; 之后就可以使用它了。
-;; 比如上文安装并 require better-defaults 的过程就可以简化为这一行：
-(use-package better-defaults)
 ;; 1. 它会判断是否已安装。没有时才会更新 package 缓存并安装它
 ;; 2. 它会自动 (require)
 ;; 3. 它有很多配置项能让你控制每个环节，从而做到把和这个软件包有关的所
@@ -83,6 +81,17 @@
         company-minimum-prefix-length 1     ; 至少几个字符后开始补全
         ))
 
+(use-package yasnippet
+  :ensure t
+  :hook
+  (prog-mode . yas-minor-mode)
+)
+
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet)
+
+
 (use-package flycheck
   :init ;; 在 (require) 之前需要执行的
   (setq flycheck-emacs-lisp-load-path 'inherit)
@@ -108,6 +117,8 @@
 (use-package magit)
 
 ;; 没错，好了。
+
+
 
 (use-package treemacs
   :ensure t
@@ -223,6 +234,14 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
+(use-package lsp-treemacs
+  :ensure t
+  :after (treemacs lsp))
+
+    
+
+
+
 
 
 
@@ -232,13 +251,112 @@
 (column-number-mode t)                       ; 在 Mode line 上显示列号
 (global-auto-revert-mode t)                  ; 当另一程序修改了文件时，让 Emacs 及时刷新 Buffer
 (delete-selection-mode t)                    ; 选中文本后输入文本会替换文本（更符合我们习惯了的其它编辑器的逻辑）
-(setq inhibit-startup-message t)             ; 关闭启动 Emacs 时的欢迎界面
+;; (setq inhibit-startup-message t)             ; 关闭启动 Emacs 时的欢迎界面
 (setq make-backup-files nil)                 ; 关闭文件自动备份
 (add-hook 'prog-mode-hook #'hs-minor-mode)   ; 编程模式下，可以折叠代码块
 
 (use-package which-key
   :ensure t
   :init (which-key-mode))
+
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode)
+  :bind (:map minibuffer-local-map
+			  ("M-A" . marginalia-cycle)))
+
+ (use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
+  ;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
+  (setq dashboard-startup-banner 'official) ;; 也可以自定义图片
+  (setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
+			  (bookmarks . 5)  ;; 显示多少个最近书签
+			  (projects . 10))) ;; 显示多少个最近项目
+  (dashboard-setup-startup-hook))
+
+(use-package google-this
+  :ensure t
+  :init
+  (google-this-mode))
+
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+	lsp-file-watch-threshold 500)
+  :hook 
+  (lsp-mode . lsp-enable-which-key-integration) ; which-key integration
+  :commands (lsp lsp-deferred)
+  :config
+    (setq lsp-completion-provider :none) ;; 阻止 lsp 重新设置 company-backend 而覆盖我们 yasnippet 的设置
+    (setq lsp-headerline-breadcrumb-enable t))
+
+(use-package lsp-ui
+  :ensure t
+  :config
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  (setq lsp-ui-doc-position 'top))
+
+
+(use-package dap-mode
+  :ensure t
+  :after hydra lsp-mode
+  :commands dap-debug
+  :custom
+  (dap-auto-configure-mode t)
+  :config
+  (dap-ui-mode 1)
+  :hydra
+  (hydra-dap-mode
+   (:color pink :hint nil :foreign-keys run)
+   "
+^Stepping^          ^Switch^                 ^Breakpoints^         ^Debug^                     ^Eval
+^^^^^^^^----------------------------------------------------------------------------------------------------------------
+_n_: Next           _ss_: Session            _bb_: Toggle          _dd_: Debug                 _ee_: Eval
+_i_: Step in        _st_: Thread             _bd_: Delete          _dr_: Debug recent          _er_: Eval region
+_o_: Step out       _sf_: Stack frame        _ba_: Add             _dl_: Debug last            _es_: Eval thing at point
+_c_: Continue       _su_: Up stack frame     _bc_: Set condition   _de_: Edit debug template   _ea_: Add expression.
+_r_: Restart frame  _sd_: Down stack frame   _bh_: Set hit count   _ds_: Debug restart
+_Q_: Disconnect     _sl_: List locals        _bl_: Set log message
+                  _sb_: List breakpoints
+                  _sS_: List sessions
+"
+   ("n" dap-next)
+   ("i" dap-step-in)
+   ("o" dap-step-out)
+   ("c" dap-continue)
+   ("r" dap-restart-frame)
+   ("ss" dap-switch-session)
+   ("st" dap-switch-thread)
+   ("sf" dap-switch-stack-frame)
+   ("su" dap-up-stack-frame)
+   ("sd" dap-down-stack-frame)
+   ("sl" dap-ui-locals)
+   ("sb" dap-ui-breakpoints)
+   ("sS" dap-ui-sessions)
+   ("bb" dap-breakpoint-toggle)
+   ("ba" dap-breakpoint-add)
+   ("bd" dap-breakpoint-delete)
+   ("bc" dap-breakpoint-condition)
+   ("bh" dap-breakpoint-hit-condition)
+   ("bl" dap-breakpoint-log-message)
+   ("dd" dap-debug)
+   ("dr" dap-debug-recent)
+   ("ds" dap-debug-restart)
+   ("dl" dap-debug-last)
+   ("de" dap-debug-edit-template)
+   ("ee" dap-eval)
+   ("ea" dap-ui-expressions-add)
+   ("er" dap-eval-region)
+   ("es" dap-eval-thing-at-point)
+   ("q" nil "quit" :color blue)
+   ("Q" dap-disconnect :color red)))
+
 
 (require 'hello)
 (require 'rust)
