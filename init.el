@@ -256,4 +256,5 @@
 
 (require 'hello)
 (require 'rust)
+(require 'typescript)
 
