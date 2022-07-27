@@ -1,4 +1,4 @@
-(add-to-list 'load-path "~/.emacs.d.bugu/conf") 
+(add-to-list 'load-path "~/.emacs.d/conf") 
 (global-linum-mode 1)
 ;; hide toolbar menubar scrollbar
 (tool-bar-mode 0)
@@ -236,8 +236,8 @@
  (use-package dashboard
   :ensure t
   :config
-  (setq dashboard-banner-logo-title "Welcome to Emacs!") ;; 个性签名，随读者喜好设置
-  ;; (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
+  (setq dashboard-banner-logo-title "Welcome, buhe!") ;; 个性签名，随读者喜好设置
+  (setq dashboard-projects-backend 'projectile) ;; 读者可以暂时注释掉这一行，等安装了 projectile 后再使用
   (setq dashboard-startup-banner 'official) ;; 也可以自定义图片
   (setq dashboard-items '((recents  . 5)   ;; 显示多少个最近文件
 			  (bookmarks . 5)  ;; 显示多少个最近书签
@@ -258,3 +258,16 @@
 (require 'rust)
 (require 'typescript)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(tide dap-mode exec-path-from-shell toml-mode company yasnippet flycheck lsp-ui lsp-mode rustic which-key treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil quelpa-use-package marginalia helm-projectile google-this dashboard)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
