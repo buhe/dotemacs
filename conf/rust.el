@@ -1,3 +1,4 @@
+
 ;; When using this directly, you will need to have use-package installed:
 ;; M-x package-install, select use-package. But if you start via
 ;; `standalone.el', this is being taken care of automatically.
@@ -27,7 +28,8 @@
   ;; (setq lsp-signature-auto-activate nil)
 
   ;; comment to disable rustfmt on save
-  (setq rustic-format-on-save t)
+  ;;
+  ;; (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
 (defun rk/rustic-mode-hook ()
@@ -88,6 +90,14 @@
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
 (use-package company
+  :config
+  ;; setq 可以像这样连着设置多个变量的值
+  (setq company-tooltip-align-annotations t ; 注释贴右侧对齐
+        company-tooltip-limit 20            ; 菜单里可选项数量
+        company-show-numbers t              ; 显示编号（然后可以用 M-数字 快速选定某一项）
+        company-idle-delay .2               ; 延时多少秒后弹出
+        company-minimum-prefix-length 1     ; 至少几个字符后开始补全
+        )
   :ensure
   :bind
   (:map company-active-map
