@@ -1,1 +1,1 @@
-("~/.emacs.d/")
+("~/code/gitHub/redis-on-blockchain/" "~/.emacs.d/")
