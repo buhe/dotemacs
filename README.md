@@ -1,3 +1,5 @@
+
+
 ### Emacs macos
 ```
 
@@ -31,7 +33,7 @@ $ ln -s $PWD/src/lldb-mi /usr/local/bin/lldb-mi
 sudo DevToolsSecurity --enable
 ```
 ### typescript
-#### PPlang-server
+#### lang-server
 ```
 
 ```
