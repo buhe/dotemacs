@@ -32,7 +32,7 @@ $ ln -s $PWD/src/lldb-mi /usr/local/bin/lldb-mi
 sudo DevToolsSecurity --enable
 ```
 ### typescript
-#### lang-server
+#### PPlang-server
 ```
 
 ```
